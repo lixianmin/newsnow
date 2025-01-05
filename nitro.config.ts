@@ -17,6 +17,8 @@ const nitroOption: Parameters<typeof viteNitro>[0] = {
       connector: "sqlite",
     },
   },
+  // nitro约定： server/api目录为api目录，不需要显示再配置一次
+  // 下面的工具函数是自动导入的，可以在任何server代码中使用，而不需要显示import
   imports: {
     dirs: ["server/utils", "shared"],
   },
