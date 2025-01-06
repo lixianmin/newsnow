@@ -16,6 +16,7 @@ const enableLoginAtom = atomWithStorage<{
   enable: true,
 })
 
+// 第一个订阅了该atom的组件被挂载时触发onMount，通常用于初始化
 enableLoginAtom.onMount = (set) => {
   myFetch("/enable-login").then((r) => {
     set(r)
