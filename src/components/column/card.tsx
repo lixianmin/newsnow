@@ -50,6 +50,7 @@ export const CardWrapper = forwardRef<HTMLElement, ItemsProps>(({ id, isDragging
   )
 })
 
+// 通常，在其它语言中，NewsCardProps类型传参，只能传一个类成员变量进来，但在ts中，可以直接解构成{id, setHandelRef}
 function NewsCard({ id, setHandleRef }: NewsCardProps) {
   const { refresh } = useRefetch()
   const { data, isFetching, isError } = useQuery({
@@ -189,7 +190,7 @@ function DiffNumber({ diff }: { diff: number }) {
 
   return (
     <AnimatePresence>
-      { shown && (
+      {shown && (
         <motion.span
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 0.5, y: -7 }}
