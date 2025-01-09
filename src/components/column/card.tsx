@@ -20,11 +20,10 @@ interface NewsCardProps {
   setHandleRef?: (ref: HTMLElement | null) => void
 }
 
+// forwardRef定义一个子组件，并通过useImperativeHandle开一些方法，让父组件可以调用
 export const CardWrapper = forwardRef<HTMLElement, ItemsProps>(({ id, isDragging, setHandleRef, style, ...props }, dndRef) => {
-  // 1. useRef定义的变量, 它一定是一个组件, 有可能是原生html组件, 也有可能是自定义的组件
-  // 2. 这个变量, 在jsx中, 也就是使用ref={ref}引用一下, 完事
-  // 3. 但在定义组件的逻辑代码中, 比如在这里就是CardWrapper的逻辑代码中, 它就是用于操纵html组件的变量
-  // 4. 虽然名字叫useRef, 但实际上是create一个变量
+  // 1. useRef配合jsx中的ref={ref}, 用于引用html组件，然后在逻辑代码中使用这个引用
+  // 2. ref.current的值，通常不应该改变，它也不会引发re-render。这是跟useState的重大区别，useState会触发re-render
   const ref = useRef<HTMLDivElement>(null)
 
   const inView = useInView(ref, {
@@ -37,7 +36,7 @@ export const CardWrapper = forwardRef<HTMLElement, ItemsProps>(({ id, isDragging
 
   return (
     <div
-      ref={ref}
+      ref={ref} // 这个就是把html开给外面的代码用的
       className={$(// 这种写法, 支持把class定义在多行里
         "flex flex-col h-500px rounded-2xl p-4 cursor-default",
         // "backdrop-blur-5",
