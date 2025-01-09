@@ -21,18 +21,24 @@ interface NewsCardProps {
 }
 
 export const CardWrapper = forwardRef<HTMLElement, ItemsProps>(({ id, isDragging, setHandleRef, style, ...props }, dndRef) => {
+  // 1. useRef定义的变量, 它一定是一个组件, 有可能是原生html组件, 也有可能是自定义的组件
+  // 2. 这个变量, 在jsx中, 也就是使用ref={ref}引用一下, 完事
+  // 3. 但在定义组件的逻辑代码中, 比如在这里就是CardWrapper的逻辑代码中, 它就是用于操纵html组件的变量
+  // 4. 虽然名字叫useRef, 但实际上是create一个变量
   const ref = useRef<HTMLDivElement>(null)
 
   const inView = useInView(ref, {
     once: true,
   })
 
+  // 1. 相当于是template method模式, 这样的父组件中可以调用子组件的方法. 通过在useImperativeHandle中定义一些方法, 开给parent使用
+  // 2. 子组件, 是通过forwardRef创建的
   useImperativeHandle(dndRef, () => ref.current! as HTMLDivElement)
 
   return (
     <div
       ref={ref}
-      className={$(
+      className={$(// 这种写法, 支持把class定义在多行里
         "flex flex-col h-500px rounded-2xl p-4 cursor-default",
         // "backdrop-blur-5",
         "transition-opacity-300",
@@ -53,6 +59,9 @@ export const CardWrapper = forwardRef<HTMLElement, ItemsProps>(({ id, isDragging
 // 通常，在其它语言中，NewsCardProps类型传参，只能传一个类成员变量进来，但在ts中，可以直接解构成{id, setHandelRef}
 function NewsCard({ id, setHandleRef }: NewsCardProps) {
   const { refresh } = useRefetch()
+
+  // 1. useQuery维护了远程调用的状态, 这样创建UI组件时, 就可以基于不同的数据状态来动态调整UI显示的内容
+  // 2. 使用useQuery必须创建一个QueryClientProvider. 本项目参考main.tsx
   const { data, isFetching, isError } = useQuery({
     queryKey: ["source", id],
     queryFn: async ({ queryKey }) => {

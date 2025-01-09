@@ -6,6 +6,8 @@ import { currentColumnIDAtom } from "~/atoms"
 
 export function Column({ id }: { id: FixedColumnID }) {
   const [currentColumnID, setCurrentColumnID] = useAtom(currentColumnIDAtom)
+
+  // useEffect中的effect是指side effect, 也就是说只要dependency array中的值变化了就会执行
   useEffect(() => {
     setCurrentColumnID(id)
   }, [id, setCurrentColumnID])

@@ -33,6 +33,7 @@ export interface PrimitiveMetadata {
   action: "init" | "manual" | "sync"
 }
 
+// typeof用于把变量空间转到类型空间
 export type FixedColumnID = (typeof fixedColumnIds)[number]
 export type HiddenColumnID = Exclude<ColumnID, FixedColumnID>
 
